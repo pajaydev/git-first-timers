@@ -1,7 +1,7 @@
 {
   "name": "git-first-timer",
   "version": "1.0.0",
-  "description": "",
+  "description": "Find Good First Issues for First timers in Git",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -10,6 +10,7 @@ class GitFirstTimers {
     getIssue() {
         console.log(BASE_URL);
         let q = this.buildQueryParam();
+        console.log(q);
         // axios.get("https://api.github.com/search/issues?q=label:%22good+first+issue%22+language:" + language + "+state:open&page=" + this.state.pageNo + "&sort=created&order=asc")
         //     .then(function (response) {
         //         console.log(response);
@@ -21,10 +22,15 @@ class GitFirstTimers {
     }
 
     buildQueryParam() {
+        let url = [];
         if (this.isObject(this.options)) {
-            console.log("object");
+            Object.keys(this.options).map((key) => {
+                let value = `${key}:${this.options[key]}`;
+                url.push(value);
+            })
         }
-        return null;
+        url = url.join('&');
+        return url;
     }
 
     isObject(object) {
@@ -32,5 +38,24 @@ class GitFirstTimers {
     }
 }
 
-const git = new GitFirstTimers();
+const git = new GitFirstTimers({
+    language: 'javascript',
+    state: 'open'
+});
 git.getIssue();
+
+const config = {
+    url: url,
+    method: 'GET',
+    params: {
+        language: 'javascript',
+        state: 'open'
+    },
+    data: undefined,
+    responseType: raw ? 'text' : 'json',
+};
+
+log(`${config.method} to ${config.url}`);
+const requestPromise = axios(config).then((data) => {
+    console.log("");
+});
