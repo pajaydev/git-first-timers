@@ -10,27 +10,26 @@ class GitFirstTimers {
         console.log(BASE_URL);
         const queryParams = this.buildQueryParam();
         const path = `${BASE_URL}?${queryParams}`;
-
-
+        console.log(path);
         return this._request(path);
     }
 
     buildQueryParam() {
-        let url = '';
+        let url = [];
         // destructure the object
         const { q, sort, order } = this.options;
-        if (!q) this.options.q = '';
-        console.log(q, sort, order);
+        if (!q) url = ['q=""'];
+        if (q) url = [`q="${q}"`];
         if (this.isObject(this.options)) {
             Object.keys(this.options).map((key) => {
-                if (key != 'sort' && key != 'order') {
-                    let value = `${key}:${this.options[key]}`;
+                if (key != 'sort' && key != 'order' && key != 'q') {
+                    let value = `${key}:${encodeURI(this.options[key])}`;
                     url.push(value);
                 }
             });
             url = url.join('+');
-            if (!sort) url = `&sort:${sort}`;
-            if (!order) url = `&order:${order}`;
+            if (sort) url = `${url}&sort:${sort}`;
+            if (order) url = `${url}&order:${order}`;
         }
         return url;
     }
@@ -59,14 +58,20 @@ class GitFirstTimers {
 
 
     }
-}
+};
 
-const git = new GitFirstTimers({
-    q: 'react+language:javascript+state:open'
-});
+module.exports = GitFirstTimers;
 
-git.getIssue().then((data) => {
-    console.log(data.total_count);
-})
+
+// const git = new GitFirstTimers({
+//     q: 'react',
+//     language: 'Javascript',
+//     sort: 'created',
+//     order: 'asc'
+// });
+
+// git.getIssue().then((data) => {
+//     console.log(data.total_count);
+// })
 
 
