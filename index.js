@@ -2,60 +2,71 @@
 const axios = require('axios');
 const BASE_URL = 'https://api.github.com/search/issues';
 class GitFirstTimers {
-    constructor(options) {
-        if (!options) options = {};
+    constructor(options = {}) {
         this.options = options;
     }
 
     getIssue() {
         console.log(BASE_URL);
-        let q = this.buildQueryParam();
-        console.log(q);
-        // axios.get("https://api.github.com/search/issues?q=label:%22good+first+issue%22+language:" + language + "+state:open&page=" + this.state.pageNo + "&sort=created&order=asc")
-        //     .then(function (response) {
-        //         console.log(response);
+        const queryParams = this.buildQueryParam();
+        const path = `${BASE_URL}?${queryParams}`;
 
-        //     })
-        //     .catch(function (error) {
-        //         console.log(error);
-        //     });
+
+        return this._request(path);
     }
 
     buildQueryParam() {
-        let url = [];
+        let url = '';
+        // destructure the object
+        const { q, sort, order } = this.options;
+        if (!q) this.options.q = '';
+        console.log(q, sort, order);
         if (this.isObject(this.options)) {
             Object.keys(this.options).map((key) => {
-                let value = `${key}:${this.options[key]}`;
-                url.push(value);
-            })
+                if (key != 'sort' && key != 'order') {
+                    let value = `${key}:${this.options[key]}`;
+                    url.push(value);
+                }
+            });
+            url = url.join('+');
+            if (!sort) url = `&sort:${sort}`;
+            if (!order) url = `&order:${order}`;
         }
-        url = url.join('&');
         return url;
     }
 
     isObject(object) {
         return (Object.prototype.toString.call(object) === "[object Object]");
     }
+
+    _request(url, method = 'GET', reqParam = {}) {
+        const config = {
+            url,
+            method,
+            params: reqParam,
+            data: undefined,
+            responseType: 'json',
+        };
+
+        return new Promise((resolve, reject) => {
+            axios(config).then((obj) => {
+                console.log("susccesss");
+                resolve(obj.data);
+            }).catch((error) => {
+                reject(error);
+            });
+        })
+
+
+    }
 }
 
 const git = new GitFirstTimers({
-    language: 'javascript',
-    state: 'open'
+    q: 'react+language:javascript+state:open'
 });
-git.getIssue();
 
-const config = {
-    url: url,
-    method: 'GET',
-    params: {
-        language: 'javascript',
-        state: 'open'
-    },
-    data: undefined,
-    responseType: raw ? 'text' : 'json',
-};
+git.getIssue().then((data) => {
+    console.log(data.total_count);
+})
 
-log(`${config.method} to ${config.url}`);
-const requestPromise = axios(config).then((data) => {
-    console.log("");
-});
+
