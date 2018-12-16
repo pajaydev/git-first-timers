@@ -23,7 +23,7 @@ class GitFirstTimers {
         if (this.isObject(this.options)) {
             Object.keys(this.options).map((key) => {
                 if (key != 'sort' && key != 'order' && key != 'q') {
-                    let value = `${key}:${encodeURI(this.options[key])}`;
+                    let value = `${key}:"${encodeURI(this.options[key])}"`;
                     url.push(value);
                 }
             });
@@ -49,7 +49,6 @@ class GitFirstTimers {
 
         return new Promise((resolve, reject) => {
             axios(config).then((obj) => {
-                console.log("susccesss");
                 resolve(obj.data);
             }).catch((error) => {
                 reject(error);
@@ -62,16 +61,5 @@ class GitFirstTimers {
 
 module.exports = GitFirstTimers;
 
-
-// const git = new GitFirstTimers({
-//     q: 'react',
-//     language: 'Javascript',
-//     sort: 'created',
-//     order: 'asc'
-// });
-
-// git.getIssue().then((data) => {
-//     console.log(data.total_count);
-// })
 
 

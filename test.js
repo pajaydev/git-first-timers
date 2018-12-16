@@ -16,37 +16,65 @@ describe("test git search issues api", () => {
 
         it("test without q param", () => {
             const github = new GitFirstTimers({
-                lang: 'Java'
+                language: 'Java'
             });
             const actualPath = github.buildQueryParam(github.options);
-            const expectedPath = 'q=""+lang:Java';
+            const expectedPath = 'q=""+language:"Java"';
             expect(expectedPath == actualPath).to.be.true;
         });
 
         it("test with q param", () => {
             const github = new GitFirstTimers({
                 q: 'react',
-                lang: 'Java'
+                language: 'Java'
             });
             const actualPath = github.buildQueryParam(github.options);
-            const expectedPath = 'q=react+lang:Java';
-            console.log(actualPath);
+            const expectedPath = 'q="react"+language:"Java"';
             expect(expectedPath == actualPath).to.be.true;
         });
 
         it("test with sort and order param", () => {
             const github = new GitFirstTimers({
                 q: 'react',
-                lang: 'Java',
+                language: 'Java',
                 sort: 'created',
                 order: 'asc'
             });
             const actualPath = github.buildQueryParam(github.options);
-            const expectedPath = 'q=react+lang:Java&sort:created&order:asc';
-            console.log(actualPath);
+            const expectedPath = 'q="react"+language:"Java"&sort:created&order:asc';
             expect(expectedPath == actualPath).to.be.true;
         });
 
+        it("test with sort and order param", () => {
+            const github = new GitFirstTimers({
+                q: 'react',
+                language: 'Java',
+                label: "Good first issue",
+                sort: 'created',
+                order: 'asc'
+            });
+            const actualPath = github.buildQueryParam(github.options);
+            const expectedPath = 'q="react"+language:"Java"+label:"Good%20first%20issue"&sort:created&order:asc';
+            expect(expectedPath == actualPath).to.be.true;
+        });
+
+    });
+
+    describe("test git api", () => {
+        it("test git api with all parameters", () => {
+            const github = new GitFirstTimers({
+                q: 'react',
+                language: 'Java',
+                label: "Good first issue",
+                sort: 'created',
+                order: 'asc'
+            });
+            const path = github.buildQueryParam(github.options);
+            return github._request(path, "GET").then((data) => {
+                expect(data != null).to.be.true;
+                expect(data.total_count > 0).to.be.true;
+            });
+        });
     });
 
 });
