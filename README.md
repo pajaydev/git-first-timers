@@ -30,10 +30,10 @@ const git = new GitFirstTimer({
 
 ## Options ##
 
-q - query a value.
-language - any language.
-sort - Sort the Github issues.
-order - asc / desc.
-label - any label ( default label - good first issue)
+<b>q</b> - query a value.<br />
+<b>language</b> - any language.<br />
+<b>sort</b> - Sort the Github issues.<br />
+<b>order</b> - asc / desc.<br />
+<b>label</b> - any label ( default label - good first issue)<br />
 
 
