@@ -60,21 +60,21 @@ describe("test git search issues api", () => {
 
     });
 
-    describe("test git api", () => {
-        it("test git api with all parameters", () => {
-            const github = new GitFirstTimers({
-                q: 'react',
-                language: 'Java',
-                label: "Good first issue",
-                sort: 'created',
-                order: 'asc'
-            });
-            const path = github.buildQueryParam(github.options);
-            return github._request(path, "GET").then((data) => {
-                expect(data != null).to.be.true;
-                expect(data.total_count > 0).to.be.true;
-            });
-        });
-    });
+    // describe("test git api", () => {
+    //     it("test git api with all parameters", () => {
+    //         const github = new GitFirstTimers({
+    //             q: 'react',
+    //             language: 'Java',
+    //             label: "Good first issue",
+    //             sort: 'created',
+    //             order: 'asc'
+    //         });
+    //         const path = github.buildQueryParam(github.options);
+    //         return github._request(path, "GET").then((data) => {
+    //             expect(data != null).to.be.true;
+    //             expect(data.total_count > 0).to.be.true;
+    //         });
+    //     });
+    // });
 
 });

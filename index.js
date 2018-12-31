@@ -6,18 +6,16 @@ class GitFirstTimers {
         this.options = options;
     }
 
-    getIssue() {
-        console.log(BASE_URL);
+    getIssues() {
         const queryParams = this.buildQueryParam();
         const path = `${BASE_URL}?${queryParams}`;
-        console.log(path);
         return this._request(path);
     }
 
     buildQueryParam() {
         let url = [];
         // destructure the object
-        const { q, sort, order } = this.options;
+        const { q, sort, order, label = "good first issue" } = this.options;
         if (!q) url = ['q=""'];
         if (q) url = [`q="${q}"`];
         if (this.isObject(this.options)) {
